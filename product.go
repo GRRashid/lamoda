@@ -1,7 +1,7 @@
 package lamoda
 
 type Product struct {
-	ID        int
+	ID        int    `json:"id"`
 	Name      string `json:"name" db:"name"`
 	Size      int    `json:"size" db:"size"`
 	Count     int    `json:"count" db:"count"`

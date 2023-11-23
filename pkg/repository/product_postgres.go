@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 	"sync"
 
@@ -35,12 +36,11 @@ func (p *ProductPostgres) Create(product lamoda.RawProduct) (int, error) {
 		if rollbackErr != nil {
 			return 0, fmt.Errorf("Rollback error:", rollbackErr)
 		}
+		if err == sql.ErrNoRows {
+			return 0, fmt.Errorf("The storage with this id does not exist")
+		}
 
 		return 0, fmt.Errorf("Select error:", err)
-	}
-
-	if storageId == 0 {
-		return 0, fmt.Errorf("The warehouse with this id does not exist")
 	}
 
 	var id int
