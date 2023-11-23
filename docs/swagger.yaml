@@ -1,0 +1,265 @@
+basePath: /
+definitions:
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.getAvailableResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/lamoda.Product'
+        type: array
+    type: object
+  handler.statusResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  lamoda.Product:
+    properties:
+      count:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      size:
+        type: integer
+      status:
+        type: string
+      storage:
+        type: integer
+    type: object
+  lamoda.ProductIds:
+    properties:
+      ids:
+        items:
+          type: integer
+        type: array
+    type: object
+  lamoda.RawProduct:
+    properties:
+      count:
+        type: integer
+      name:
+        type: string
+      size:
+        type: integer
+      status:
+        type: string
+      storage:
+        type: integer
+    type: object
+  lamoda.Storage:
+    properties:
+      accessibility:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API Server for TodoList Application
+  title: Lamoda API
+  version: "1.0"
+paths:
+  /api/products/create:
+    post:
+      consumes:
+      - application/json
+      description: create product
+      operationId: create-product
+      parameters:
+      - description: product info
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/lamoda.RawProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create product
+      tags:
+      - products
+  /api/products/reserve:
+    put:
+      consumes:
+      - application/json
+      description: reserve product
+      operationId: reserved-product
+      parameters:
+      - description: product info
+        in: body
+        name: ids
+        required: true
+        schema:
+          $ref: '#/definitions/lamoda.ProductIds'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Reserve product
+      tags:
+      - products
+  /api/products/unreserved:
+    put:
+      consumes:
+      - application/json
+      description: unreserved product
+      operationId: unreserved-product
+      parameters:
+      - description: product info
+        in: body
+        name: ids
+        required: true
+        schema:
+          $ref: '#/definitions/lamoda.ProductIds'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Unreserved product
+      tags:
+      - products
+  /api/storages/{storageId}/products/unreserved:
+    get:
+      consumes:
+      - application/json
+      description: get all lists
+      operationId: get-products
+      parameters:
+      - description: storage id
+        in: path
+        name: storageId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getAvailableResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get available products
+      tags:
+      - products
+  /api/storages/create:
+    post:
+      consumes:
+        - application/json
+      description: create storage
+      operationId: create-storage
+      parameters:
+        - description: storage create
+          in: body
+          name: product
+          required: true
+          schema:
+            $ref: '#/definitions/lamoda.RawStorage'
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create product
+      tags:
+        - products
+swagger: "2.0"
