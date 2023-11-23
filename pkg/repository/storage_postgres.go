@@ -26,11 +26,11 @@ func (p *StoragePostgres) CreateStorage(storage lamoda.RawStorage) (int, error) 
 	row := tx.QueryRow(createProductQuery, storage.Name, storage.Accessibility)
 	err = row.Scan(&id)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
-			return 0, err
+		rollbackErr := tx.Rollback()
+		if rollbackErr != nil {
+			return 0, fmt.Errorf("Rollback error:", rollbackErr)
 		}
-		return 0, err
+		return 0, fmt.Errorf("Insert error:", err)
 	}
 
 	return id, tx.Commit()
