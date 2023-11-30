@@ -7,10 +7,11 @@ import (
 
 type Product interface {
 	Create(input lamoda.RawProduct) (int, error)
-	GetLast(storageId int) ([]lamoda.Product, error)
-	ReservedProduct(ids []int) error
-	UnreservedProduct(ids []int) error
-	CountProductsInStorage(storageId int) (int, error)
+	FindAvailableProducts(storageId int) ([]lamoda.Product, error)
+	ReservedProduct(updatableProducts []int) error
+	UnreservedProduct(updatableProducts []int) error
+	FindStorage(storageId int) (int, error)
+	FindUpdatableProducts(ids []int, status string) ([]int, error)
 }
 
 type Storage interface {
